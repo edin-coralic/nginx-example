@@ -1,0 +1,57 @@
+version: '3'
+services:
+
+  nginx-entrypoint:
+    image: 'nginx:latest'
+    restart: always
+    volumes:
+      - './nginx-entrypoint.conf:/etc/nginx/nginx.conf:ro'
+    networks:
+      - new
+    ports:
+      - '80:80'
+    depends_on:
+      - nginx-vue-a
+      - nginx-vue-b
+      - nginx-python-a
+      - nginx-python-b
+
+  nginx-vue-a:
+    image: 'nginx:latest'
+    restart: always
+    volumes:
+      - './nginx-vue.conf:/etc/nginx/nginx.conf:ro'
+      - './nginx-vue-index-a.html:/usr/share/nginx/html/index.html:ro'
+    networks:
+      - new
+
+  nginx-vue-b:
+    image: 'nginx:latest'
+    restart: always
+    volumes:
+      - './nginx-vue.conf:/etc/nginx/nginx.conf:ro'
+      - './nginx-vue-index-b.html:/usr/share/nginx/html/index.html:ro'
+    networks:
+      - new
+
+  nginx-python-a:
+    image: 'nginx:latest'
+    restart: always
+    volumes:
+      - './nginx-vue.conf:/etc/nginx/nginx.conf:ro'
+      - './nginx-python-index-a.html:/usr/share/nginx/html/index.html:ro'
+    networks:
+      - new
+
+  nginx-python-b:
+    image: 'nginx:latest'
+    restart: always
+    volumes:
+      - './nginx-vue.conf:/etc/nginx/nginx.conf:ro'
+      - './nginx-python-index-b.html:/usr/share/nginx/html/index.html:ro'
+    networks:
+      - new
+
+networks:
+  new:
+    driver: bridge
