@@ -15,13 +15,14 @@ services:
       - nginx-vue-b
       - nginx-python-a
       - nginx-python-b
+      - php
 
   nginx-vue-a:
     image: 'nginx:latest'
     restart: always
     volumes:
       - './nginx-vue.conf:/etc/nginx/nginx.conf:ro'
-      - './nginx-vue-index-a.html:/usr/share/nginx/html/index.html:ro'
+      - ./code:/code
     networks:
       - new
 
@@ -30,7 +31,7 @@ services:
     restart: always
     volumes:
       - './nginx-vue.conf:/etc/nginx/nginx.conf:ro'
-      - './nginx-vue-index-b.html:/usr/share/nginx/html/index.html:ro'
+      - ./code:/code
     networks:
       - new
 
@@ -39,7 +40,7 @@ services:
     restart: always
     volumes:
       - './nginx-vue.conf:/etc/nginx/nginx.conf:ro'
-      - './nginx-python-index-a.html:/usr/share/nginx/html/index.html:ro'
+      - ./code:/code
     networks:
       - new
 
@@ -48,7 +49,14 @@ services:
     restart: always
     volumes:
       - './nginx-vue.conf:/etc/nginx/nginx.conf:ro'
-      - './nginx-python-index-b.html:/usr/share/nginx/html/index.html:ro'
+      - ./code:/code
+    networks:
+      - new
+
+  php:
+    image: php:7-fpm
+    volumes:
+      - ./code:/code
     networks:
       - new
 
